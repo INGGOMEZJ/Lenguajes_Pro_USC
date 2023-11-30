@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unidad 2 - Patrones de Diseño</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f8f8f8; /* Color de fondo del cuerpo */
+    }
+
+    .container {
+      text-align: center;
+      border: 1px solid #500000;
+      background-color: #f8f8f8;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 800px; /* Ancho máximo del contenedor */
+      width: 100%;
+    }
+
+    .code-block {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    footer {
+      margin-top: 20px;
+    }
+
+    .code-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .code-section {
+      flex: 1;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Unidad 2 - Patrones de Diseño</h1>
+    </header>
+
+    <main>
+      <section>
+        <h2>Patrones de Diseño aprendidos en la Unidad 2</h2>
+        <p>En esta unidad, se exploraron diferentes patrones de diseño, incluido el Patrón Estructural Adapter y el Patrón de Comportamiento Strategy.</p>
+
+        <div class="code-container">
+          <div class="code-section">
+            <div style="border: 1px solid #500000; background-color: #f8f8f8; padding: 10px; border-radius: 5px;">
+              <h2>Patrón Estructural Adapter</h2>
+              <pre>
+                <code>
+                  class Adaptee:
+                      # ... (código del Adaptee)
+
+                  class Client:
+                      # ... (código del Client)
+
+                  class Adapter(Client):
+                      # ... (código del Adapter)
+
+                  # Ejemplo de implementación del adapter:
+                  Pdf_reader = Client()
+                  Word_reader = Adaptee()
+
+                  print(Adapter(Word_reader).request)
+                </code>
+              </pre>
+            </div>
+          </div>
+          
+          <div class="code-section">
+            <div style="border: 1px solid #500000; background-color: #f8f8f8; padding: 10px; border-radius: 5px;">
+              <h2>Patrón de Comportamiento Strategy</h2>
+              <pre>
+                <code>
+                  class Strategy:
+                      # ... (código del Strategy)
+
+                  class ConcreteStrategyA(Strategy):
+                      # ... (código del ConcreteStrategyA)
+
+                  class ConcreteStrategyB(Strategy):
+                      # ... (código del ConcreteStrategyB)
+
+                  class Context:
+                      # ... (código del Context)
+
+                  # Ejemplo de uso del patrón strategy (general):
+                  strategyA = ConcreteStrategyA()
+                  contexto_str1 = Context(strategyA)
+                  result_str1 = contexto_str1.execute_strategy()
+
+                  strategyB = ConcreteStrategyB()
+                  contexto_str2 = Context(strategyB)
+                  result_str2 = contexto_str2.execute_strategy()
+                </code>
+              </pre>
+            </div>
+          </div>
+        </div>
+        
+        <p>Se comparte repositorio con código de ejemplo en la siguiente URL:</p>
+        <ul>
+          <li><a href="https://github.com/dfloaizab/ProgrammingLanguages/tree/main/Unidad2_OOP_Python/DesignPatterns_Python">UNIDAD 2</a></li>
+        </ul>
+            
+        <footer>
+          <h1>2023 USC</h1>
+        </footer>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

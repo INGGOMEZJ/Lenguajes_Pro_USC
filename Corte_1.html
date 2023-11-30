@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unidad 1 - Lo Aprendido</title>
+</head>
+<body>
+  <header>
+    <h1>Unidad 1 - Introducion a la programacion funcional con Pyhton</h1>
+  </header>
+
+  <main>
+    <section>
+      <!-- Contenido de la unidad 1 -->
+      <h2>Conceptos aprendidos en la Unidad 1</h2>
+      <p>La unidad 1 sirve como una introducción a Python como lenguaje de programación multiparadigma y algunos conceptos básicos del paradigma de programación funcional.</p>
+
+       
+
+        <div style="display: flex; justify-content: space-between;">
+
+          <div style="flex: 1; margin-right: 10px;">
+            <div style="border: 1px solid #500000; background-color: #f8f8f8; padding: 10px; border-radius: 5px;">
+              <h2>Euler</h2>
+              <pre>
+                <code>
+                  # An approximation of the euler number
+                  # using a series with map and reduce
+                  # (according to pdf)
+                  from functools import reduce
+        
+                  # definition of factorial:
+                  def factorial(N):
+                      res = 1
+                      for x in range(1, N + 1):
+                          res = res * x
+                      return res
+        
+                  # get the number of terms of the series
+                  num_terms = int(input("Cuántos elementos debe tener la serie?"))
+                  terms = list(range(0, num_terms + 1))
+        
+                  # create list of 1/n!:
+                  terms2 = list(map(lambda x: 1 / factorial(x), terms))
+        
+                  print(terms2)
+        
+                  # sums the new list:
+                  result = reduce(lambda x, y: x + y, terms2)
+                  print(f"número de euler aproximado con {limit} términos: {result}")
+                </code>
+              </pre>
+            </div>
+          </div>
+          
+          <div style="border: 1px solid #500000; background-color: #f8f8f8; padding: 10px; border-radius: 5px;">
+            <h2>Unidad1/MapFilterExample.py</h2>
+            <pre>
+              <code>
+                def convertirAAnios(x):
+                return {
+                    x["nombre"].lower(),
+                    x["Edad"]/12,
+                    x["Vegetariano"]
+                }
+            
+            def filtrarVegetarianos(x):
+                x["Vegetariano"] = True
+            
+            listaEstudiantes = [ 
+                {"nombre":"Diego","Edad":552,"Vegetariano":False},
+                {"nombre":"Diana","Edad":480,"Vegetariano":False},
+                {"nombre":"Camila","Edad":312,"Vegetariano":True}
+            ]
+            
+            listaEdadAnios = list(map(convertirAAnios,listaEstudiantes))
+            print(listaEdadAnios)
+            
+            listaVegetarianos = list(filter(lambda x:x["Vegetariano"]==True,listaEstudiantes))
+            listaEdadAnios = list(map(convertirAAnios,listaVegetarianos))
+            print(listaEdadAnios)
+          </pre>
+        </div>
+
+
+
+          <div style="flex: 1; margin-left: 10px;"> 
+            <div style="border: 1px solid #500000; background-color: #f8f8f8; padding: 10px; border-radius: 5px;">
+              <h2>Unidad1/FunctionalProgrammingBasics.py</h2>
+              <pre>
+                <code>
+               #CLASE 4: FUNCIONES COMO OBJETOS DE PRIMER ORDEN
+
+            #Funciones de Ejemplo
+            from functools import reduce
+
+
+            def funcion1(x, y):
+                return x+y
+
+            def funcion2(x,y):
+                return x*y
+
+            #funciones de conversión de divisas:
+            def cop_2_usd(x):
+                return x/4393
+
+            def cop_2_eur(x):
+                return x/4380
+
+            def cop_2_stp(x):
+                return x/5190
+
+            #(0) LAS FUNCIONES PUEDEN SER ALMACENADAS EN ESTRUCTURAS DE DATOS
+            lista_funciones = [funcion1, funcion2]
+            dic_funciones = {"suma":funcion1, "producto":funcion2}
+
+
+            # (1) LAS FUNCIONES PUEDEN SER RETORNADAS COMO VALORES
+            #Selector de funcion
+            def seleccionar_funcion():
+                seleccion = input("Seleccione la operación ('S'=Suma, 'M' = Producto):")
+                if seleccion == "S":
+                    #return funcion1
+                    #return lista_funciones[0]
+                    #return dic_funciones["suma"]
+                    return lambda x,y: x+y
+                else:
+                    #return funcion2
+                    #return lista_funciones[1]
+                    #return dic_funciones["producto"]
+                    return lambda x,y: x*y
+
+            # (2) LAS FUNCIONES PUEDEN SER ASIGNADAS A VARIABLES
+            fun_ejecutar = seleccionar_funcion() 
+            print(type(fun_ejecutar))
+            #fun_ejecutar puede ser funcion1 o funcion2
+            result = fun_ejecutar(5,6)
+            print( f"resultado: {result}" )
+
+            #FUNCIONES DE ALTO ORDEN: FUNCIONES QUE OPERAN SOBRE OTRAS FUNCIONES
+
+            #conversión de divisas (sin map):
+            lista_cop = [ 108000.0, 8560.3, 9874.2, 54100.6, 47100.2 ]
+            lista_usd = []
+            for val in lista_cop:
+                vlr_usd = val / 4393
+                lista_usd.append(vlr_usd)
+
+            print(lista_usd)
+
+            # MAP 
+            #conversion de divisas 
+            #mapea la funcion "cop_2_usd" a cada elemento de lista_cop y devuelve
+            #un iterable que debe ser convertido a lista
+            result = map ( cop_2_usd, lista_cop  )
+            lista_usd = list(result)
+            print(lista_usd)
+
+            result2 = map(  lambda x: x/23 , lista_cop  )
+            print(list(result2))
+
+            # FILTER
+            print("lista original:")
+            print(lista_cop)
+            result3 = filter(  lambda a: a >50000.0, lista_cop  )
+            print("lista filtrada:")
+            print(list(result3))
+
+            total_usd = reduce (lambda x,y: x+y, lista_usd)
+            print(total_usd)
+            print(type(total_usd))
+
+
+
+
+
+
+
+
+
+                  
+                </code>
+              </pre>
+            </div>
+          </div>
+        
+        </div>
+        <body>
+          <div class="container">
+            
+         
+        <p>Se comparte repositorio con código de ejemplo en la siguiente URL:</p>
+            
+         
+        <ul>
+              <li><a href="https://github.com/dfloaizab/ProgrammingLanguages/tree/main/Unidad1">UNIDAD 1</a></li>
+            </ul>
+            
+            
+        <footer>
+              <h1>2023 USC</h1>
+            </footer>
+          </div>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </section>
+  </main>
+
+
+
+</body>
+</html>
