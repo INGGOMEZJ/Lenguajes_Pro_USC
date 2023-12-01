@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unidad 3 - Programacion Multihilo con Java</title>
+  
+  <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
+    
+    <p>Entender  los aspectos básicos de la programación concurrente en Java y la sincronización de hilos.</p>
+    <p>Identificar los posibles problemas derivados de la programación concurrente con hilos</p>
+    Implementar los mecanismos necesarios para mitigar y/o evitar los problemas derivados de la programación concurrente con hilos.
+  </p>
+
+  </div>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f8f8f8; 
+    }
+
+    .container {
+      text-align: center;
+      border: 1px solid #500000;
+      background-color: #f8f8f8;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .code-block {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    footer {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Unidad 3 - Concurrencia en Java</h1>
+    </header>
+
+    <main>
+      <section>
+        <h2>Muestra de Cuenta</h2>
+        <div class="code-block">
+          <pre>
+            <code>
+             
+            public class Account {
+              
+              private float balance;
+              
+              
+              public Account(float initialBalance)
+              {
+                this.balance = initialBalance;
+              }
+              
+              /**
+              * retiro
+              * @param amount
+              */
+              public void withdraw(float amount)
+              {
+                //validar balance >= valor a retirar
+                balance -= amount;
+              }
+              
+              /**
+              * depósito
+              * @param amount
+              */
+              public void deposit(float amount)
+              {
+                balance += amount;
+              }
+
+            }
+
+            
+                public class Account {
+                  
+                  private float balance;
+                  
+                  
+                  public Account(float initialBalance)
+                  {
+                    this.balance = initialBalance;
+                  }
+                  
+                  /**
+                  * retiro
+                  * @param amount
+                  */
+                  public void withdraw(float amount)
+                  {
+                    //validar balance >= valor a retirar
+                    balance -= amount;
+                  }
+                  
+                  /**
+                  * depósito
+                  * @param amount
+                  */
+                  public void deposit(float amount)
+                  {
+                    balance += amount;
+                  }
+
+                }
+            </code>
+          </pre>
+        </div>
+      </section>
+
+      <section>
+        <h2>Hilos Simples</h2>
+        <div class="code-block">
+          <pre>
+            <code>
+              public class HilosSimples {	
+	
+                static void hiloMensaje(String mensaje)
+                {
+                  String nombreHilo = Thread.currentThread().getName();
+                  System.out.println("Hilo:"+nombreHilo+",Mensaje:"+mensaje);
+                }		
+                
+                //clase estática para el segundo hilo del programa:
+                private static class CicloMensajes implements Runnable
+                {
+                  @Override
+                  public void run() {
+                    //cola de mensajes:
+                    String messages[] = {
+                        "Este",
+                        "es",
+                        "el",
+                        "curso",
+                        "de",
+                        "lenguajes",
+                        "de",
+                        "programación"
+                    };
+                    
+                    for(String mensaje: messages)
+                    {
+                      try {
+                        Thread.sleep(2000);
+                        hiloMensaje(mensaje);
+                      } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        hiloMensaje("No he terminado!");
+                      }					
+                    }			
+                  }		
+                }	
+                /**
+                 * Hilo principal del programa:
+                 * @param args
+                 * @throws InterruptedException 
+                 */
+                public static void main(String args[]) throws InterruptedException
+                {
+                  long tiempoEspera = 1000*14;//1000*60*60; //tiempo de espera de una hora
+                  hiloMensaje("Arranca el hilo principal, se va a iniciar el hilo de mensajes");
+                  long tiempoInicio = System.currentTimeMillis();
+                  Thread miHilo = new Thread(new CicloMensajes());
+                  miHilo.start();
+                  hiloMensaje("Hilo iniciado, esperando que termine...");
+                  while(miHilo.isAlive())
+                  {
+                    hiloMensaje("Esperando que termine...");
+                    miHilo.join(1000);
+                    long tiempoActual, tiempoTranscurrido;
+                    tiempoActual = System.currentTimeMillis();
+                    tiempoTranscurrido = tiempoActual - tiempoInicio;
+                    if(tiempoTranscurrido > tiempoEspera && miHilo.isAlive())
+                    {
+                      hiloMensaje("Sigo esperando que termine!");
+                      miHilo.interrupt();
+                      miHilo.join();
+                    }			
+                  }
+                  hiloMensaje("Por fin ");		
+                }
+              }
+            </code>
+          </pre>
+        </div>
+      </section>
+
+      <section>
+        <h2>MainThread</h2>
+        <div class="code-block">
+          <pre>
+            <code>
+             
+            public class Account {
+              
+              private float balance;
+              
+              
+              public Account(float initialBalance)
+              {
+                this.balance = initialBalance;
+              }
+              
+              /**
+              * retiro
+              * @param amount
+              */
+              public void withdraw(float amount)
+              {
+                //validar balance >= valor a retirar
+                balance -= amount;
+              }
+              
+              /**
+              * depósito
+              * @param amount
+              */
+              public void deposit(float amount)
+              {
+                balance += amount;
+              }
+
+            } 
+            </code>
+          </pre>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <h1>2023 USC</h1>
+    </footer>
+  </div>
+</body>
+</html>
